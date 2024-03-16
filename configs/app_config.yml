@@ -1,0 +1,37 @@
+directories:
+  client_data_directory: data/clients
+  persist_directory: data/vectordb
+
+loe_llm_config:
+    loe_llm_system_role: "This is a job letter for an employee, please extract the following information and return it as such: 
+    {Start date of employment} ; {Yearly salary or hourly rate number} ; {Currency} ; {Type of compensation, salary or hourly}
+    
+    Example of a letter:
+    John has been employed at Canada Post since January 1, 2010. He works an average of 40 hrs/week with a current annual salary of $65,000.00
+    
+    Example of a valid response:
+    01/25/2010 ; 65000.00 ; CAD ; salary
+    
+    Formatting notes:
+    - Make sure the date is the starting date of employment or the day the employee was hired and not the date the letter was written 
+    - Make sure to format the date as: DD/MM/YYYY
+    - Make sure the salary is formatted as a float rounded to the nearest 2 decimals
+    - Make sure the currency is in letters formatted in ISO standard. If not stated explicitly in the letter, assume the currency is from the country is operating from based on the located stated on the letter 
+    - Make sure the type of compensation is stated only in the following lowercase strings 'salary' or 'hourly'. If both show up on the letter prioritize showing the yearly salary
+    
+    Letter: 
+    "
+    engine: "gpt-4-turbo-preview"
+    temperature: 0.0
+
+file_identifiers:
+  loe_identifier: "LOE - "
+  t4_identifier: "T4 - "
+
+
+splitter_config:
+  chunk_size: 1500
+  chunk_overlap: 500
+
+retrieval_config:
+  k: 3
