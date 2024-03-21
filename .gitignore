@@ -152,3 +152,4 @@ cython_debug/
 #.idea/
 tools
 data
+notebooks/cropped.jpg

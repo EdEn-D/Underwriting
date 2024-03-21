@@ -20,6 +20,7 @@ model = NANONETSOCR()
 model.set_token('39423a53-da18-11ee-8150-fe728a611e82')
 
 # input_file = 'data/clients/Yash Patel/Yash Paystub Nov 17 2023.pdf'
-input_file = 'N:/Dev/AI/Underwriting/data/clients/Hemat and Amy/Hemant/Hemant Sud 2021 T4.pdf'
-output_file = 'N:/Dev/AI/Underwriting/output2.csv'
+# input_file = 'N:/Dev/AI/Underwriting/data/clients/Hemat and Amy/Hemant/Hemant Sud 2021 T4.pdf'
+input_file = r"N:\Dev\AI\Underwriting\data\clients\Safia Seyed\Safia Seyed Paystub.pdf"
+output_file = 'N:/Dev/AI/Underwriting/output3.csv'
 model.convert_to_csv(input_file, output_file_name=output_file)
