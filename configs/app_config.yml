@@ -24,9 +24,14 @@ loe_llm_config:
     engine: "gpt-4-turbo-preview"
     temperature: 0.0
 
+llm_config:
+  engine: "gpt-4-turbo-preview"
+  temperature: 0.0
+
 file_identifiers:
   loe_identifier: "LOE - "
   t4_identifier: "T4 - "
+  payslip_identifier: "PAY - "
 
 
 splitter_config:

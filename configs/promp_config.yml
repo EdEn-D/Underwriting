@@ -1,5 +1,5 @@
 loe_prompts:
-    loe_llm_system_role: "This is a job letter for an employee, please extract the following information and return it as such: 
+    llm_system_role: "This is a job letter for an employee, please extract the following information and return it as such: 
     {Start date of employment} ; {Yearly salary or hourly rate number} ; {Currency} ; {Type of compensation, salary or hourly}
     
     Example of a letter:
@@ -17,3 +17,6 @@ loe_prompts:
     
     Letter: 
     "
+
+payslip_prompts:
+    prompt: ""

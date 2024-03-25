@@ -13,7 +13,7 @@ class LoadConfig:
             app_config = yaml.load(cfg, Loader=yaml.FullLoader)
 
         # LLM configs
-        self.llm_engine = app_config["loe_llm_config"]["engine"]
+        self.llm_engine = app_config["llm_config"]["engine"]
         self.llm_temperature = app_config["loe_llm_config"]["temperature"]
         self.loe_llm_system_role = app_config["loe_llm_config"]["loe_llm_system_role"]
         self.persist_directory = str(here(
@@ -32,6 +32,7 @@ class LoadConfig:
         # File identifiers
         self.loe_identifier = app_config["file_identifiers"][("loe_identifier")]
         self.t4_identifier = app_config["file_identifiers"][("t4_identifier")]
+        self.payslip_identifier = app_config["file_identifiers"][("payslip_identifier")]
         # clean up the upload doc vectordb if it exists
         self.create_directory(self.persist_directory)
 
@@ -44,3 +45,11 @@ class LoadConfig:
         """
         if not os.path.exists(directory_path):
             os.makedirs(directory_path)
+
+
+class LoadPrompts:
+    def __init__(self) -> None:
+        with open(here("configs/prompt_config.yml")) as cfg:
+            prompt_config = yaml.load(cfg, Loader=yaml.FullLoader)
+
+        self.loe_system_prompt = prompt_config["loe_prompts"]["llm_system_role"]
