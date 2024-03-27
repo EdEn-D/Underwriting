@@ -16,6 +16,7 @@ from langsmith import Client
 from nanonets import NANONETSOCR
 from load_config import LoadConfig, LoadPrompts
 from typing import List
+import re
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
@@ -29,32 +30,36 @@ prompt_config = LoadPrompts()
 
 # Todo try to output JSON straight from the llm, same for LOE processor
 class PayslipProcessor:
-    def __init__(self, client_dir):
-        self.client_dir = client_dir
-        self.__load_payslip()
+    def __init__(self, input_file):
+        self.input_file = input_file
+        # self.payslip_paths = self.__load_payslip()
         self.__define_output_directories()
+        self.nanonets_table_extract()
+
         self.table_paths = self.extract_tables_to_csv(self.nano_extracted_tables_csv_path, self.extracted_csvs_path)
         self.table_dfs = self.extract_tables_to_dfs(self.nano_extracted_tables_csv_path)
-        self.table_text = self.extract_text_from_pdf(self.payslip_file_paths) # TODO: Generalize this to more than 1 document
+        self.table_text = self.extract_text_from_pdf(self.input_file) # TODO: Generalize this to more than 1 document
         self.__define_agents()
 
     def __define_output_directories(self):
         # Extracted tables:
-        self.extracted_csvs_path = os.path.join(os.path.dirname(self.client_dir),
-                                           os.path.splitext(os.path.basename(self.client_dir))[0] + " extracted_tables")
+        self.extracted_csvs_path = os.path.join(os.path.dirname(self.input_file),
+                                           os.path.splitext(os.path.basename(self.input_file))[0] + " extracted_tables")
         os.makedirs(self.extracted_csvs_path, exist_ok=True)
-        self.nano_extracted_tables_csv_path = os.path.join(self.extracted_csvs_path,
-                                                      os.path.splitext(os.path.basename(self.client_dir))[0] + "_extracted_tables.csv")
+        self.nano_extracted_tables_csv_path = os.path.join(str(self.extracted_csvs_path), os.path.splitext(os.path.basename(self.input_file))[0] + "_extracted_tables.csv")
 
-    def __load_payslip(self):
-        payslip_file_paths = []
-        for file_name in os.listdir(self.client_dir):
-            if file_name.startswith(app_config.payslip_identifier):
-                payslip_file_paths.append(os.path.join(self.client_dir, file_name))
-        if not payslip_file_paths:
-            raise FileNotFoundError("payslip file not found")
-
-        self.payslip_file_path = payslip_file_paths[0]
+    # def __load_payslip(self):
+    #     payslip_file_paths = []
+    #     for file_name in os.listdir(self.client_dir):
+    #         full_path = os.path.join(self.client_dir, file_name)
+    #         if os.path.isfile(full_path) and file_name.startswith(app_config.payslip_identifier):
+    #             payslip_file_paths.append(os.path.join(self.client_dir, file_name))
+    #     if not payslip_file_paths:
+    #         raise FileNotFoundError("payslip file not found")
+    #
+    #     print("Payslips Loaded: ")
+    #     print(payslip_file_paths)
+    #     return payslip_file_paths
 
     def nanonets_table_extract(self):
         if os.path.exists(self.nano_extracted_tables_csv_path):
@@ -63,8 +68,7 @@ class PayslipProcessor:
 
         model = NANONETSOCR()
         model.set_token(os.getenv("NANONESTS_TABLE_MODEL_TOKEN"))
-        model.convert_to_csv(self.client_dir, output_file_name=self.nano_extracted_tables_csv_path)
-
+        model.convert_to_csv(self.input_file, output_file_name=self.nano_extracted_tables_csv_path)
 
     def extract_tables_to_csv(self, csv_file_path, output_path):
         def save_table(table_lines, table_number, output_folder):
@@ -179,3 +183,25 @@ class PayslipProcessor:
             agent_type=AgentType.OPENAI_FUNCTIONS,
         )
         self.text_chat = ChatOpenAI(temperature=0, model=app_config.llm_engine)
+
+
+    def __extract_numerical_value(self, text):
+        # Regular expression to match a sequence of digits that may contain a decimal point
+        match = re.search(r'\d+\.\d+|\d+', text)
+        if match:
+            return float(match.group())
+        else:
+            return None
+    def get_earnings(self, earning_type, agent='csv'):
+        # if agent == 'csv':
+        engine = self.csv_chat_agent
+        if agent == 'df':
+            engine = self.dfs_chat_agent
+
+        if earning_type == "regular":
+            prompt = prompt_config.payslip_regular_earnings
+        elif earning_type == "ytd":
+            prompt = prompt_config.payslip_ytd_earnings
+
+        output = engine.invoke(prompt)["output"]
+        return self.__extract_numerical_value(output)

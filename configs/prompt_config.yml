@@ -19,4 +19,13 @@ loe_prompts:
     "
 
 payslip_prompts:
-    prompt: ""
+    regular_earnings_prompt: "You are provided with financial pay stubs. What is the Regular Salary? Provide the lower value between Regular and Gross Salary if applicable. 
+    Terminology might differ. Regular earnings refer to earnings without any bonuses or benefits
+
+    In the final response provide ONLY the numerical value of the Regular earnings."
+
+    ytd_earnings_prompt: "You are provided with financial pay stubs. What is the Regular YTD earnings? Provide the lower value between Regular YTD and Gross YTD earnings if applicable. 
+    Terminology might differ. Regular earnings refer to earnings without any bonuses or benefits
+
+    In the final response provide ONLY the numerical value of the Regular YTD earnings."
+

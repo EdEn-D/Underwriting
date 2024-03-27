@@ -4,9 +4,10 @@ import os
 import fitz
 from langchain_openai  import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
-from load_config import LoadConfig
+from load_config import LoadConfig, LoadPrompts
 
 app_config = LoadConfig()
+prompt_config = LoadPrompts()
 
 class LOEProcessor:
     def __init__(self, client_dir):
@@ -31,7 +32,7 @@ class LOEProcessor:
         llm = ChatOpenAI(model_name=app_config.llm_engine, temperature=app_config.llm_temperature)
         messages = [
             SystemMessage(
-                content=app_config.loe_llm_system_role
+                content=prompt_config.loe_system_prompt
             ),
             HumanMessage(
                 content=self.__load_loe()
