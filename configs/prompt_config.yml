@@ -29,3 +29,16 @@ payslip_prompts:
 
     In the final response provide ONLY the numerical value of the Regular YTD earnings."
 
+    payment_date_prompt: "You are provided with the text extracted from financial pay stubs. Provide the start and end date of the pay stub in the following format DD/MM/YYYY as:
+    (Start date) ; (End date)
+    
+    For example, for a pay stub that starts on March 1st, 2024 and ends on March 15th, 2024 the output should be:
+    01/03/2024 ; 15/03/2024
+    
+    If you cannot find the dates, say that you could not find the dates.
+    
+    Pay stub text:
+    {text}
+    
+    Your response:
+    "

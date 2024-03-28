@@ -47,7 +47,7 @@ class PayslipProcessor:
         self.nano_extracted_tables_csv_path = os.path.join(str(self.extracted_csvs_path), os.path.splitext(os.path.basename(self.input_file))[0] + "_extracted_tables.csv")
 
     def __process_payslips(self):
-        doc_tools.nanonets_table_extract()
+        doc_tools.nanonets_table_extract(self.nano_extracted_tables_csv_path, self.input_file)
         self.table_paths = doc_tools.extract_tables_to_csv(self.nano_extracted_tables_csv_path, self.extracted_csvs_path)
         self.table_dfs = doc_tools.extract_tables_to_dfs(self.nano_extracted_tables_csv_path)
         self.table_text = doc_tools.extract_text_from_pdf(self.input_file)
@@ -87,4 +87,9 @@ class PayslipProcessor:
             raise ValueError(f"Unsupported earning type: {earning_type}")
 
         output = engine.invoke(prompt)["output"]
-        return parsing_tools.extract_numerical_value(output)
+        return str(parsing_tools.extract_numerical_value(output))
+
+    def get_payslip_dates(self):
+        prompt = PromptTemplate.from_template(prompt_config.payslip_dates)
+        prompt = prompt.format(text=self.table_text)
+        return str(self.text_chat.invoke(prompt).content)

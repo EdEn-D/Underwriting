@@ -55,3 +55,4 @@ class LoadPrompts:
         self.loe_system_prompt = prompt_config["loe_prompts"]["llm_system_role"]
         self.payslip_regular_earnings = prompt_config["payslip_prompts"]["regular_earnings_prompt"]
         self.payslip_ytd_earnings = prompt_config["payslip_prompts"]["ytd_earnings_prompt"]
+        self.payslip_dates = prompt_config["payslip_prompts"]["payment_date_prompt"]

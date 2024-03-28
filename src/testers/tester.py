@@ -31,8 +31,9 @@ def main():
     payslip_path = select_file_and_get_path("Select payslip file" , os.path.dirname(loe_path))
 
     payslip_data = PayslipProcessor(payslip_path)
-    print("Regular: " + str(payslip_data.get_earnings('regular' ,agent='csv')))
-    print("YTD: " + str(payslip_data.get_earnings('ytd' ,agent='csv')))
+    print("Regular: " + payslip_data.get_earnings('regular' ,agent='csv'))
+    print("YTD: " + payslip_data.get_earnings('ytd' ,agent='csv'))
+    print("Dates " + payslip_data.get_payslip_dates())
 
 if __name__ == "__main__":
     main()
