@@ -8,30 +8,28 @@ from tkinter import filedialog
 app_config = LoadConfig()
 
 
-def select_file_and_get_path():
+def select_file_and_get_path(window_title, initial_dir=app_config.client_data_directory):
     # Initialize the Tkinter root element
     root = tk.Tk()
     root.withdraw()  # Use to hide the main window
 
-    # Set the starting directory to your data folder path
-    # Adjust this path to match the location of your data folder
-    initial_dir = app_config.client_data_directory
+    # Set the window title
+    root.title(window_title)
 
     # Open the file dialog and let the user select a file
-    file_path = filedialog.askopenfilename(initialdir=initial_dir)
+    file_path = filedialog.askopenfilename(title=window_title , initialdir=initial_dir)
 
     if file_path:
         print(f"Selected file path: {file_path}")
         return file_path
     else:
-        print("No file was selected.")
-        return None
+        # print("No file was selected.")
+        raise FileExistsError("File not selected")
 
 def main():
-    payslip_path = select_file_and_get_path()
-    # client_path = os.path.join(app_config.client_data_directory,"Alex and Patricia\Alex")
-    # payslip_path = r"N:\Dev\AI\Underwriting\data\clients\Alex and Patricia\Alex\Alexander_Deaibes_Pay_Stub(s)_9tM4WQ8J9J3yc13DgjRkEo.pdf"
-    #
+    loe_path = select_file_and_get_path("Select LOE file")
+    payslip_path = select_file_and_get_path("Select payslip file" , os.path.dirname(loe_path))
+
     payslip_data = PayslipProcessor(payslip_path)
     print("Regular: " + str(payslip_data.get_earnings('regular' ,agent='csv')))
     print("YTD: " + str(payslip_data.get_earnings('ytd' ,agent='csv')))
