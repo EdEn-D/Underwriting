@@ -38,7 +38,7 @@ class PayslipProcessor:
 
         self.table_paths = self.extract_tables_to_csv(self.nano_extracted_tables_csv_path, self.extracted_csvs_path)
         self.table_dfs = self.extract_tables_to_dfs(self.nano_extracted_tables_csv_path)
-        self.table_text = self.extract_text_from_pdf(self.input_file) # TODO: Generalize this to more than 1 document
+        self.table_text = self.extract_text_from_pdf(self.input_file)
         self.__define_agents()
 
     def __define_output_directories(self):
@@ -48,7 +48,7 @@ class PayslipProcessor:
         os.makedirs(self.extracted_csvs_path, exist_ok=True)
         self.nano_extracted_tables_csv_path = os.path.join(str(self.extracted_csvs_path), os.path.splitext(os.path.basename(self.input_file))[0] + "_extracted_tables.csv")
 
-    # def __load_payslip(self):
+     # def __load_payslip(self):
     #     payslip_file_paths = []
     #     for file_name in os.listdir(self.client_dir):
     #         full_path = os.path.join(self.client_dir, file_name)
@@ -154,7 +154,7 @@ class PayslipProcessor:
 
         return dfs
 
-    def extract_text_from_pdf(self, pdf_path):
+    def extract_text_from_pdf(self, pdf_path) -> str:
         doc = fitz.open(pdf_path)
         text = ''
         for page in doc:
@@ -166,7 +166,7 @@ class PayslipProcessor:
     def process_payslips(self):
         self.table_paths = self.extract_tables_to_csv(self.nano_extracted_tables_csv_path, self.extracted_csvs_path)
         self.table_dfs = self.extract_tables_to_dfs(self.nano_extracted_tables_csv_path)
-        self.table_text = self.extract_text_from_pdf(self.client_dir)
+        self.table_text = self.extract_text_from_pdf(self.input_file)
 
     def __define_agents(self):
         self.dfs_chat_agent = create_pandas_dataframe_agent(
@@ -202,6 +202,8 @@ class PayslipProcessor:
             prompt = prompt_config.payslip_regular_earnings
         elif earning_type == "ytd":
             prompt = prompt_config.payslip_ytd_earnings
+        else:
+            raise ValueError(f"Unsupported earning type: {earning_type}")
 
         output = engine.invoke(prompt)["output"]
         return self.__extract_numerical_value(output)
