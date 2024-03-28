@@ -1,5 +1,6 @@
 import sys
 sys.path.append('N:/Dev/AI/Underwriting/src/utils')
+from src.tools import doc_tools
 import os
 import fitz
 from langchain_openai  import ChatOpenAI
@@ -10,23 +11,9 @@ app_config = LoadConfig()
 prompt_config = LoadPrompts()
 
 class LOEProcessor:
-    def __init__(self, client_dir):
-        self.client_dir = client_dir
+    def __init__(self, input_file):
+        self.input_file = input_file
 
-    def __load_loe(self):
-        loe_file_path = ''
-        for file_name in os.listdir(self.client_dir):
-            if file_name.startswith(app_config.loe_identifier):
-                loe_file_path = os.path.join(self.client_dir, file_name)
-        if not loe_file_path:
-            print("LOE file not found")
-
-        document = fitz.open(loe_file_path)  # Open the PDF file
-        text = ""
-        for page in document:  # Iterate through each page
-            text += page.get_text()  # Extract text from the page
-        document.close()  # Close the document
-        return text
 
     def extract_info(self):
         llm = ChatOpenAI(model_name=app_config.llm_engine, temperature=app_config.llm_temperature)
@@ -35,7 +22,7 @@ class LOEProcessor:
                 content=prompt_config.loe_system_prompt
             ),
             HumanMessage(
-                content=self.__load_loe()
+                content=doc_tools.extract_text_from_pdf(self.input_file)
             )
         ]
         print(messages)
