@@ -35,10 +35,25 @@ payslip_prompts:
     For example, for a pay stub that starts on March 1st, 2024 and ends on March 15th, 2024 the output should be:
     01/03/2024 ; 15/03/2024
     
-    If you cannot find the dates, say that you could not find the dates.
+    Notes:
+    - If you cannot find both dates, go through and try to find them again
+    - If you could only provide 1 date, provide that date. If you cannot find any dates, say that you could not find the dates.
+    - Make sure you provide the start and end dates of the pay stub and not the payment period when the salary was paid, look for terminology resembling 'start' and 'end'
     
     Pay stub text:
     {text}
     
     Your response:
+    "
+
+    payment_date_prompt_csv: "You are provided with the tables extracted from financial pay stubs. Provide the start and end date of the pay stub in the following format DD/MM/YYYY as:
+    (Start date) ; (End date)
+    
+    For example, for a pay stub that starts on March 1st, 2024 and ends on March 15th, 2024 the output should be:
+    01/03/2024 ; 15/03/2024
+    
+    Notes:
+    - If you cannot find both dates, go through and try to find them again
+    - If you could only provide 1 date, provide that date. If you cannot find any dates, say that you could not find the dates.
+    - Look for terminology resembling 'start' and 'end' such as 'beginning', or 'ending'
     "

@@ -56,3 +56,4 @@ class LoadPrompts:
         self.payslip_regular_earnings = prompt_config["payslip_prompts"]["regular_earnings_prompt"]
         self.payslip_ytd_earnings = prompt_config["payslip_prompts"]["ytd_earnings_prompt"]
         self.payslip_dates = prompt_config["payslip_prompts"]["payment_date_prompt"]
+        self.payslip_dates_csv = prompt_config["payslip_prompts"]["payment_date_prompt_csv"]

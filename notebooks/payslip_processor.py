@@ -1,4 +1,4 @@
-import os
+import os, sys
 from dotenv import load_dotenv, find_dotenv
 from pprint import pprint, pformat
 import fitz  # Import the PyMuPDF library
@@ -15,7 +15,7 @@ from langsmith import Client
 
 from src.tools import doc_tools, parsing_tools
 
-
+sys.path.append('N:/Dev/AI/Underwriting/src/utils')
 from load_config import LoadConfig, LoadPrompts
 from typing import List
 import re

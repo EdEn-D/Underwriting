@@ -27,13 +27,14 @@ def select_file_and_get_path(window_title, initial_dir=app_config.client_data_di
         raise FileExistsError("File not selected")
 
 def main():
-    loe_path = select_file_and_get_path("Select LOE file")
-    payslip_path = select_file_and_get_path("Select payslip file" , os.path.dirname(loe_path))
+    # loe_path = select_file_and_get_path("Select LOE file")
+    payslip_path = select_file_and_get_path("Select payslip file")# , os.path.dirname(loe_path))
 
     payslip_data = PayslipProcessor(payslip_path)
     print("Regular: " + payslip_data.get_earnings('regular' ,agent='csv'))
     print("YTD: " + payslip_data.get_earnings('ytd' ,agent='csv'))
-    print("Dates " + payslip_data.get_payslip_dates())
+    print("Dates from text: " + payslip_data.get_payslip_dates())
+    print("Dates from csv: " + payslip_data.get_payslip_dates_csv())
 
 if __name__ == "__main__":
     main()
@@ -46,5 +47,8 @@ if __name__ == "__main__":
     1.a. Try a single prompt
     1.b. Split up the pages
     
-2
+
+    
+2. Dates need more work        
+        
 '''
