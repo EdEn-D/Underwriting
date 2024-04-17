@@ -156,3 +156,6 @@ notebooks/cropped.jpg
 notebooks/crew_callback_logs.txt
 notebooks/db/3dc005fc-21fa-4762-acc3-e4e033b3675f/length.bin
 notebooks/db/chroma.sqlite3
+notebooks/temp.ipynb
+src/utils/nanonets_retrieve_table.py
+/notebooks/db/

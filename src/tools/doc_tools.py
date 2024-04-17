@@ -3,12 +3,18 @@ import pandas as pd
 from nanonets import NANONETSOCR
 
 
-def extract_text_from_pdf(pdf_path) -> str:
+def extract_text_from_pdf(output_path, pdf_path) -> str: #TODO: Get text from OCR
     doc = fitz.open(pdf_path)
     text = ''
     for page in doc:
         text += page.get_text()
     doc.close()
+
+    file_name = os.path.split(pdf_path)[-1].split('.')[0]
+    output_file_path = os.path.join(output_path, f"{file_name} extracted text.txt")
+    with open(output_file_path, 'w') as file:
+        print("Saving extracted text data...")
+        file.write(text)
 
     return text
 

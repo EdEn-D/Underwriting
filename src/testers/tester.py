@@ -4,6 +4,8 @@ from src.utils.load_config import LoadConfig
 from src.utils.payslip_processor import PayslipProcessor
 import tkinter as tk
 from tkinter import filedialog
+from colorama import Fore, Back, Style
+
 
 app_config = LoadConfig()
 
@@ -31,10 +33,18 @@ def main():
     payslip_path = select_file_and_get_path("Select payslip file")# , os.path.dirname(loe_path))
 
     payslip_data = PayslipProcessor(payslip_path)
-    print("Regular: " + payslip_data.get_earnings('regular' ,agent='csv'))
-    print("YTD: " + payslip_data.get_earnings('ytd' ,agent='csv'))
-    print("Dates from text: " + payslip_data.get_payslip_dates())
-    print("Dates from csv: " + payslip_data.get_payslip_dates_csv())
+
+    # regular_earnings = payslip_data.get_earnings('regular', agent='csv')
+    # print(Back.BLUE + "Regular: " + regular_earnings)
+    #
+    # ytd_earnings = payslip_data.get_earnings('ytd', agent='csv')
+    # print(Back.BLUE + "YTD: " + ytd_earnings)
+
+    dates_text = payslip_data.get_payslip_dates()
+    print(Back.BLUE + "Dates from text: " + dates_text)
+
+    # dates_csv = payslip_data.get_payslip_dates_csv()
+    # print(Back.BLUE + "Dates from csv: " +  dates_csv)
 
 if __name__ == "__main__":
     main()
@@ -46,9 +56,8 @@ if __name__ == "__main__":
 1. AI doesnt know which tables to look at when multiple paystubs are in the same PDF, multiple pages
     1.a. Try a single prompt
     1.b. Split up the pages
-    
 
-    
-2. Dates need more work        
+2. Dates need more work
+        
         
 '''
