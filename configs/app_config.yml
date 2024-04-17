@@ -21,11 +21,11 @@ loe_llm_config:
     
     Letter: 
     "
-    engine: "gpt-4-turbo-preview"
+    engine: "gpt-4-turbo"
     temperature: 0.0
 
 llm_config:
-  engine: "gpt-4-turbo-preview"
+  engine: "gpt-4-turbo"
   temperature: 0.0
 
 file_identifiers:

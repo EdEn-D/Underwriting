@@ -1,22 +1,47 @@
+from typing import List
+
 import fitz, os, csv
 import pandas as pd
 from nanonets import NANONETSOCR
+from paddleocr import PaddleOCR,draw_ocr
+from pdf2image import convert_from_path
+from PIL import Image
+import numpy as np
 
 
-def extract_text_from_pdf(output_path, pdf_path) -> str: #TODO: Get text from OCR
-    doc = fitz.open(pdf_path)
-    text = ''
-    for page in doc:
-        text += page.get_text()
-    doc.close()
 
+def extract_text_from_pdf(output_path, pdf_path, source='txt') -> str:
     file_name = os.path.split(pdf_path)[-1].split('.')[0]
-    output_file_path = os.path.join(output_path, f"{file_name} extracted text.txt")
+    output_file_path = os.path.join(output_path, f"{file_name} extracted {source}.txt")
+    # Check if already exists
+    if os.path.exists(output_file_path):
+        print(f"Extracted {source} file found. Reading from it...")
+        with open(output_file_path, 'r') as file:
+            return file.read()
+
+    text = ''
+    if source == 'txt':
+        doc = fitz.open(pdf_path)
+        for page in doc:
+            text += page.get_text()
+        doc.close()
+    elif source == 'ocr':
+        ocr = PaddleOCR(use_angle_cls=False, lang='en', use_gpu=True)  # need to run only once to download and load model into memory
+        images = convert_from_path(pdf_path)
+        for pil_image in images:
+            image = np.array(pil_image)
+            ocr_result = ocr.ocr(image, cls=True)
+            for line in ocr_result:
+                line_text = "\n".join([text_info[-1][0] for text_info in line])
+                text += line_text
+
+
     with open(output_file_path, 'w') as file:
-        print("Saving extracted text data...")
+        print(f"Saving extracted {source} data...")
         file.write(text)
 
     return text
+
 
 def extract_tables_to_csv(csv_file_path, output_path):
     def save_table(table_lines, table_number, output_folder):

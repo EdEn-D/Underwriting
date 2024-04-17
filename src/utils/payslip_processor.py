@@ -19,6 +19,7 @@ print(os.getcwd())
 from load_config import LoadConfig, LoadPrompts
 from typing import List
 import re
+from colorama import Fore, Back, Style
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
@@ -51,6 +52,7 @@ class PayslipProcessor:
         self.table_paths = doc_tools.extract_tables_to_csv(self.nano_extracted_tables_csv_path, self.extracted_csvs_path)
         self.table_dfs = doc_tools.extract_tables_to_dfs(self.nano_extracted_tables_csv_path)
         self.table_text = doc_tools.extract_text_from_pdf(self.extracted_csvs_path, self.input_file)
+        self.table_text_ocr = doc_tools.extract_text_from_pdf(self.extracted_csvs_path, self.input_file, source='ocr')
 
     def __define_agents(self):
         self.dfs_chat_agent = create_pandas_dataframe_agent(
@@ -92,11 +94,16 @@ class PayslipProcessor:
         output = engine.invoke(prompt)["output"]
         return str(parsing_tools.extract_numerical_value(output))
 
-    def get_payslip_dates(self):
-        prompt = PromptTemplate.from_template(prompt_config.payslip_dates)
-        prompt = prompt.format(text=self.table_text)
+    def get_payslip_dates(self, source='txt'):
+        prompt_template = PromptTemplate.from_template(prompt_config.payslip_dates)
+
+        if source == 'txt':
+            prompt = prompt_template.format(text=self.table_text)
+        elif source == 'ocr':
+            prompt = prompt_template.format(text=self.table_text_ocr)
         # print("Date debugging:")
         # print(self.table_text)
+        # print(Back.YELLOW, prompt)
         return str(self.text_chat.invoke(prompt).content)
 
     def get_payslip_dates_csv(self):

@@ -29,21 +29,22 @@ payslip_prompts:
 
     In the final response provide ONLY the numerical value of the Regular YTD earnings."
 
-    payment_date_prompt: "You are provided with the text extracted from financial pay stubs. Provide the start and end date of the pay stub in the following format DD/MM/YYYY as:
-    (Start date) ; (End date)
-    
-    For example, for a pay stub that starts on March 1st, 2024 and ends on March 15th, 2024 the output should be:
-    01/03/2024 ; 15/03/2024
-    
-    Notes:
-    - If you cannot find both dates, go through and try to find them again
-    - If you could only provide 1 date, provide that date. If you cannot find any dates, say that you could not find the dates.
-    - Make sure you provide the start and end dates of the pay stub and not the payment period when the salary was paid, look for terminology resembling 'start' and 'end'
-    
-    Pay stub text:
-    {text}
-    
-    Your response:
+    payment_date_prompt: "You are provided with the text extracted from financial pay stubs. Provide the start and end date of the pay stub in the following format DD/MM/YYYY as:\n
+    (Start date) ; (End date)\n
+    \n
+    For example, for a pay stub that starts on March 1st, 2024 and ends on March 15th, 2024 the output should be:\n
+    01/03/2024 ; 15/03/2024\n
+    \n
+    Directions:\n
+    - The dates might not be clearly displayed, look for a word date and a number after it which may represent the date\n
+    - If you cannot find both dates, go through and try to find them again\n
+    - If you could only provide 1 date, provide that date. If you cannot find any dates, say that you could not find the dates.\n
+    - Make sure you provide the start and end dates of the pay stub and not the payment period when the salary was paid, look for terminology resembling 'start' and 'end'\n
+    \n
+    Pay stub text:\n
+    {text}\n
+    \n
+    Your response:\n
     "
 
     payment_date_prompt_csv: "You are provided with the tables extracted from financial pay stubs. Provide the start and end date of the pay stub in the following format DD/MM/YYYY as:

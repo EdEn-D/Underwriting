@@ -34,17 +34,17 @@ def main():
 
     payslip_data = PayslipProcessor(payslip_path)
 
-    # regular_earnings = payslip_data.get_earnings('regular', agent='csv')
-    # print(Back.BLUE + "Regular: " + regular_earnings)
-    #
-    # ytd_earnings = payslip_data.get_earnings('ytd', agent='csv')
-    # print(Back.BLUE + "YTD: " + ytd_earnings)
+    regular_earnings = payslip_data.get_earnings('regular', agent='csv')
+    ytd_earnings = payslip_data.get_earnings('ytd', agent='csv')
+    dates_text = payslip_data.get_payslip_dates(source='txt')
+    dates_ocr = payslip_data.get_payslip_dates(source='ocr')
+    dates_csv = payslip_data.get_payslip_dates_csv()
 
-    dates_text = payslip_data.get_payslip_dates()
+    print(Back.BLUE + "Regular: " + regular_earnings)
+    print(Back.BLUE + "YTD: " + ytd_earnings)
     print(Back.BLUE + "Dates from text: " + dates_text)
-
-    # dates_csv = payslip_data.get_payslip_dates_csv()
-    # print(Back.BLUE + "Dates from csv: " +  dates_csv)
+    print(Back.BLUE + "Dates from ocr: " + dates_ocr)
+    print(Back.BLUE + "Dates from csv: " +  dates_csv)
 
 if __name__ == "__main__":
     main()
