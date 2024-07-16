@@ -2,7 +2,7 @@ from typing import List
 
 import fitz  # Import the PyMuPDF library
 import os
-from load_config import LoadConfig
+from .load_config import LoadConfig
 
 import pytesseract
 from pytesseract import Output

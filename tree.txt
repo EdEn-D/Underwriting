@@ -1,0 +1,31 @@
+.
+├── README.md
+├── __init__.py
+├── configs
+│   ├── app_config.yml
+│   └── prompt_config.yml
+├── data
+│   ├── Checklist[1].docx
+│   ├── clients
+│   └── vectordb
+├── tests
+│   ├── __init__.py
+│   ├── tester.py
+│   └── testing_tools.py
+└── underwriting
+    ├── __init__.py
+    ├── main.py
+    ├── tools
+    │   ├── __init__ copy.py
+    │   ├── __init__.py
+    │   ├── doc_tools.py
+    │   ├── llm_tools.py
+    │   └── parsing_tools.py
+    └── utils
+        ├── __init__.py
+        ├── load_config.py
+        ├── loe_processor.py
+        ├── payslip_processor.py
+        └── t4_processor.py
+
+73 directories, 458 files

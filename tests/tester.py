@@ -1,7 +1,7 @@
 import os, sys
 sys.path.append('src/utils')
-from src.utils.load_config import LoadConfig
-from src.utils.payslip_processor import PayslipProcessor
+from utils.load_config import LoadConfig
+from utils.payslip_processor import PayslipProcessor
 import tkinter as tk
 from tkinter import filedialog
 from colorama import Fore, Back, Style

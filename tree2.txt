@@ -1,0 +1,28 @@
+.
+├── __init__.py
+├── configs
+├── data
+│   ├── clients
+│   └── vectordb
+├── main.py
+├── tests
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── tester.py
+│   └── testing_tools.py
+└── underwriting
+    ├── __init__.py
+    ├── __pycache__
+    ├── tools
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   ├── doc_tools.py
+    │   ├── llm_tools.py
+    │   └── parsing_tools.py
+    └── utils
+        ├── __init__.py
+        ├── __pycache__
+        ├── load_config.py
+        ├── loe_processor.py
+        ├── payslip_processor.py
+        └── t4_processor.py

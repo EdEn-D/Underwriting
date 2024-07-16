@@ -10,15 +10,18 @@ import numpy as np
 
 
 
-def extract_text_from_pdf(output_path, pdf_path, source='txt') -> str:
-    file_name = os.path.split(pdf_path)[-1].split('.')[0]
-    output_file_path = os.path.join(output_path, f"{file_name} extracted {source}.txt")
-    # Check if already exists
+def extract_text_from_pdf(pdf_path, output_path='', source='txt') -> str:
+    file_name = os.path.basename(pdf_path).split('.')[0] # Get the file name without the extension
+    if not output_path:
+        output_path = os.path.dirname(pdf_path)
+    output_file_path = os.path.join(output_path, f"{file_name} extracted {source}.txt") 
+    # Check if the extracted text file already exists to avoid re-extraction
     if os.path.exists(output_file_path):
         print(f"Extracted {source} file found. Reading from it...")
         with open(output_file_path, 'r') as file:
-            return file.read()
+            print(file.read())
 
+    # Extract text from the PDF
     text = ''
     if source == 'txt':
         doc = fitz.open(pdf_path)
@@ -26,7 +29,8 @@ def extract_text_from_pdf(output_path, pdf_path, source='txt') -> str:
             text += page.get_text()
         doc.close()
     elif source == 'ocr':
-        ocr = PaddleOCR(use_angle_cls=False, lang='en', use_gpu=True)  # need to run only once to download and load model into memory
+        if not ocr:
+            ocr = PaddleOCR(use_angle_cls=False, lang='en', use_gpu=True) # need to run only once to download and load model into memory
         images = convert_from_path(pdf_path)
         for pil_image in images:
             image = np.array(pil_image)
@@ -34,7 +38,6 @@ def extract_text_from_pdf(output_path, pdf_path, source='txt') -> str:
             for line in ocr_result:
                 line_text = "\n".join([text_info[-1][0] for text_info in line])
                 text += line_text
-
 
     with open(output_file_path, 'w') as file:
         print(f"Saving extracted {source} data...")
