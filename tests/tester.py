@@ -5,7 +5,7 @@ from src.utils.payslip_processor import PayslipProcessor
 import tkinter as tk
 from tkinter import filedialog
 from colorama import Fore, Back, Style
-
+import testing_tools
 
 app_config = LoadConfig()
 
@@ -40,6 +40,17 @@ def main():
     dates_ocr = payslip_data.get_payslip_dates(source='ocr')
     dates_csv = payslip_data.get_payslip_dates_csv()
 
+    data = {}
+    data["payslip_path"] = payslip_path
+    data["filename"] = os.path.basename(payslip_path)
+    data["regular_earnings"] = regular_earnings
+    data["ytd_earnings"] = ytd_earnings
+    data["dates_text"] = dates_text
+    data["dates_ocr"] = dates_ocr
+    data["dates_csv"] = dates_csv
+
+    testing_tools.log_to_eval_sheet(payslip_path, data)
+
     print(Back.BLUE + "Regular: " + regular_earnings)
     print(Back.BLUE + "YTD: " + ytd_earnings)
     print(Back.BLUE + "Dates from text: " + dates_text)
@@ -57,7 +68,5 @@ if __name__ == "__main__":
     1.a. Try a single prompt
     1.b. Split up the pages
 
-2. Dates need more work
-        
-        
+2. Dates need more work  
 '''

@@ -1,2 +1,2 @@
 # UnderwritingAI
- Underwriting AI bot for automatic underwriting of morgages
+ Underwriting AI bot for automatic underwriting of mortgages

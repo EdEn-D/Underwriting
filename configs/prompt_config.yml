@@ -3,10 +3,10 @@ loe_prompts:
     {Start date of employment} ; {Yearly salary or hourly rate number} ; {Currency} ; {Type of compensation, salary or hourly}
     
     Example of a letter:
-    John has been employed at Canada Post since January 1, 2010. He works an average of 40 hrs/week with a current annual salary of $65,000.00
+    John has been employed at Canada Post since January 25, 2010. He works an average of 40 hrs/week with a current annual salary of $65,000.00
     
     Example of a valid response:
-    01/25/2010 ; 65000.00 ; CAD ; salary
+    25/01/2010 ; 65000.00 ; CAD ; salary
     
     Formatting notes:
     - Make sure the date is the starting date of employment or the day the employee was hired and not the date the letter was written 
