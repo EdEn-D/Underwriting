@@ -4,6 +4,7 @@ project_root = Path(__file__).resolve().parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
+
 from underwriting.utils import LoadConfig, LOEProcessor, T4Processor, PayslipProcessor
 
 app_config = LoadConfig()

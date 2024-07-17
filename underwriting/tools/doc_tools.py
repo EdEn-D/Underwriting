@@ -8,7 +8,7 @@ from pdf2image import convert_from_path
 from PIL import Image
 import numpy as np
 
-
+DEBUG = False
 
 def extract_text_from_pdf(pdf_path, output_path='', source='txt') -> str:
     file_name = os.path.basename(pdf_path).split('.')[0] # Get the file name without the extension
@@ -17,9 +17,11 @@ def extract_text_from_pdf(pdf_path, output_path='', source='txt') -> str:
     output_file_path = os.path.join(output_path, f"{file_name} extracted {source}.txt") 
     # Check if the extracted text file already exists to avoid re-extraction
     if os.path.exists(output_file_path):
-        print(f"Extracted {source} file found. Reading from it...")
+        if DEBUG:
+            print(f"Extracted {source} file found. Reading from it...")
         with open(output_file_path, 'r') as file:
-            print(file.read())
+            if DEBUG:
+                print(file.read())
 
     # Extract text from the PDF
     text = ''
@@ -40,7 +42,8 @@ def extract_text_from_pdf(pdf_path, output_path='', source='txt') -> str:
                 text += line_text
 
     with open(output_file_path, 'w') as file:
-        print(f"Saving extracted {source} data...")
+        if DEBUG:
+            print(f"Saving extracted {source} data...")
         file.write(text)
 
     return text
@@ -57,7 +60,8 @@ def extract_tables_to_csv(csv_file_path, output_path):
         with open(output_file_path, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(table_lines)
-        print(f"Table {table_number} saved to {output_file_path}")
+        if DEBUG:
+            print(f"Table {table_number} saved to {output_file_path}")
         return output_file_path  # Return the path to the saved file
 
     # Create output folder path
