@@ -25,7 +25,8 @@ loe_llm_config:
     temperature: 0.0
 
 llm_config:
-  engine: "gpt-4-turbo"
+  engine: "gpt-4o"
+  lite_engine: "gpt-4o-mini"
   temperature: 0.0
 
 file_identifiers:

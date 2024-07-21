@@ -3,6 +3,7 @@ loe_prompts:
         Instructions:
         You will receive job letter for an employee, please extract the following information and return it in JSON format as such: 
         {
+            "client_name": ((Client name)),
             "employment_date": ((Start date of employment)),
             "salary": ((Yearly salary or hourly rate number)),
             "currency": ((Currency)),
@@ -10,22 +11,24 @@ loe_prompts:
         }
         
         Example of a letter:
-        John has been employed at Canada Post since January 25, 2010. He works an average of 40 hrs/week with a current annual salary of $65,000.00
+        John Wick has been employed at Canada Post since January 25, 2010. He works an average of 40 hrs/week with a current annual salary of $65,000.00
         
         Example of a valid response:
         {
-            "employment_date": "25/01/2010",
-            "salary": 65000.00,
+            "client_name": "John Wick",
+            "employment_date": "01/25/2010",
+            "salary": "65000.00",
             "currency": "CAD",
             "compensation_type": "salary"
         }
         
         Formatting notes:
         - Make sure the date is the starting date of employment or the day the employee was hired and not the date the letter was written 
-        - Make sure to format the date as: DD/MM/YYYY
+        - Make sure to format the date as: MM/DD/YYYY
         - Make sure the salary is formatted as a float rounded to the nearest 2 decimals
         - Make sure the currency is in letters formatted in ISO standard. If not stated explicitly in the letter, assume the currency is from the country is operating from based on the located stated on the letter 
         - Make sure the type of compensation is stated only in the following lowercase strings 'salary' or 'hourly'. If both show up on the letter prioritize showing the yearly salary
+        - Make sure the format of the response is in proper JSON format
         
         Letter:
 
