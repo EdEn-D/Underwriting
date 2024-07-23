@@ -5,13 +5,33 @@ from underwriting.tools import doc_tools
 from langchain_openai  import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 import json, time
-from ..tools.airtable_eval import log_eval_data
+from ..tools.airtable_eval import create_airtable_log
 
 app_config = LoadConfig()
 prompt_config = LoadPrompts()
 
+TESTING = False
 DEBUG = False
 LOGGING = True
+
+json_test_data = '''
+ {
+  "LOE_data": {
+    "data": {
+      "client_name": "Alexander Deaibes",
+      "employment_date": "05/02/2022",
+      "salary": "55569.64",
+      "currency": "CAD",
+      "compensation_type": "salary"
+    },
+    "metadata": {
+      "model": "gpt-4o-mini",
+      "execution_time": "2.45"
+    }
+  }
+}
+'''
+
 
 class LOEProcessor:
     def __init__(self, input_file):
@@ -20,6 +40,10 @@ class LOEProcessor:
     def extract_data(self):
         start_time = time.time()
 
+        if TESTING:
+            return_value = json.loads(json_test_data)
+            create_airtable_log(return_value, self.input_file)
+            return return_value
         llm = ChatOpenAI(model_name=app_config.llm_lite_engine, temperature=app_config.llm_temperature)
         messages = [
             SystemMessage(
@@ -52,13 +76,14 @@ class LOEProcessor:
             'execution_time': f"{execution_time:.2f}"
         }
 
-        return_value = {"data" : self.extracted_data, "metadata" : self.metadata}
+        data_metadata = {"data" : self.extracted_data, "metadata" : self.metadata}
+        return_value = {"LOE_data" : data_metadata}
 
         if DEBUG:
             print("Returing LOE Data: ", return_value)
 
         if LOGGING:
-            log_eval_data(return_value)
+            create_airtable_log(return_value, self.input_file)
         return return_value
     
     def get_data(self):

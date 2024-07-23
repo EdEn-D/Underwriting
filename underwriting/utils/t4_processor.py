@@ -12,8 +12,8 @@ import re
 app_config = LoadConfig()
 
 # T4 Processor currently assumes the T4 the official computer generated T4 document (other documents cannot be officially used anyways)
-# Doesn't work, should implement a CV solution
-# Todo: Find a way to check that the official document is provided
+# Doesn't work, should implement a CSV solution
+# TODO: Find a way to check that the official document is provided
 class T4Processor:
     def __init__(self, client_dir):
         self.client_dir = client_dir
@@ -28,6 +28,8 @@ class T4Processor:
             raise FileNotFoundError("T4 file not found")
 
         return t4_file_path
+    
+
     def __get_texts(self):
         pdf_paths = self.__load_t4()
         if not pdf_paths:
@@ -43,6 +45,8 @@ class T4Processor:
             pdf_texts.append(text)
 
         return pdf_texts
+    
+    
     def extract_info(self):
 
         texts = self.__get_texts()
